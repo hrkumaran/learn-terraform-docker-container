@@ -1,0 +1,202 @@
+
+
+*) Customer who going to Subscription
+
+*) Donot have item category ( Anything ) 
+
+*) Subscription option ( Monthly )
+
+*) Write Call for each Checkout. 
+
+*) TPS 1 min 100 counts per min 
+
+*) DB Scription Request 
+
+*)  Table Design with the Exsiting table ID.  ( CustomerID, Exsiting details)
+
+8) API Contract with Request and Response 
+
+*) Existing Infrastucture with MOnitoring Details 
+
+*) Any Batch to Update for Failure in the Checkout Process for Re-Try
+
+*) SpringBoot Microservice with Spring Secruity
+
+*) apis Required 
+
+   * ) getSubscriptionDetails ( for the particular product)
+    *) AddSubscriptionProduct ( TO Add a Subscription for a product)
+	*) UpdateSubscription ( Update or Cancel Subscription)
+	
+
+SwaggerUI 
+ 
+  GetSubscriptionDetails 
+  
+   Request
+   {
+    "CustomerID":"",
+	"ProductList"
+	{
+	  "ProductID":"1001",
+	  "AddressType":"Home",
+	  "ProductID":"1002",
+	  "AddressType":"Office",
+	  "ProductID":"1003",
+	  "AddressType":"Home"
+  	 }
+	}
+	
+	Response
+	
+	{
+	    "CustomerID":"",
+		"Subscriptiondetails"
+		{
+		  "ProductID":"1001"
+		  "SubscriptionID":"1011",
+		  "SubscriptionType":"Monthly",
+		  "Details":"Product is already subscribed",
+		  "Status":"Y"
+        }
+	}
+	
+AddSubsctiptionProduct
+
+Request
+   {
+    "CustomerID":"",
+	"ProductList"
+	{
+	  {
+	  "ProductID":"1001",
+	  "SubscriptionType"="Monthly"
+	  }
+	  {
+	  "ProductID":"1002",
+	  "SubscriptionType"="Monthly",
+	  }
+	  {
+	  "ProductID":"1003",
+	  "SubscriptionType"="Monthly"
+	  }
+  	 }
+	}
+	
+	Response
+	
+	{
+	    "CustomerID":"",
+		"ProductID":"1001",
+		"SubscriptionID":"1011",
+		"SubscriptionStatus":"SubscriptionAddedSuccessfully",
+
+	}
+	
+
+UpdateSubsctiptionProduct
+
+Request
+   {
+    "CustomerID":"",
+	"ProductList"
+	{
+	  "ProductID":"1001",
+	  "SubscriptionID":"1011",
+	  "Status":"Update"
+	  "SubscriptionType"="Monthly"
+	  }
+	  {
+	  "ProductID":"1002",
+	  "SubscriptionID":"1011",
+	  "Status":"cancel",
+	  "SubscriptionType"="Monthly",
+	  }
+	  ,
+	  {
+	  "ProductID":"1003",
+	  "SubscriptionID":"1011",
+	  "Status":"hold",
+	  "SubscriptionType"="Monthly"
+  	 }
+	}
+	
+	Response
+	
+	{
+	    "CustomerID":"",
+		{
+		"ProductID":"1001",
+		"SubscriptionID":"1011",
+		"SubscriptionStatus":"SubscriptionupdatedSuccessfully",
+},
+		{
+		"ProductID":"1001",
+		"SubscriptionID":"1011",
+		"SubscriptionStatus":"SubscriptionCancelledSuccessfully",
+},
+		{
+		"ProductID":"1001",
+		"SubscriptionID":"1011",
+		"SubscriptionStatus":"SubscriptionObnHoldSuccessfully",
+}
+
+	}
+	
+SQL DB Relational 
+
+
+Tables : STATUS_TYPE 
+Table 
+{
+   STATUS_CODE long(100) not null;
+   STATUS_TYPE string(255) not null
+}   
+
+Tables : SUBSCRIPTION_TYPE 
+Table 
+{
+   SUBSCRIPTION_CODE long(100) not null;
+   SUBSCRIPTION_TYPE string(255) not null
+}   
+
+Table : SUBSCRIPTION_DETAILS  ( Soft Delete or Hard Delete )
+
+{
+ ID long auto increment;
+ SubscriptionStatus string not null;
+ SubscriptionType String
+ Details String
+ Foreign key for ProductID with ProductTable;
+ Foreign key for CustomerID with CustomerTable;
+ }
+ 
+ TRIGGERS it will monitor the SUBSCRIPTION_DETAILS and update teh Details_Hostory and Details_Audit
+ 
+ SUBSCRIPTION_DETAILS_HISTORY 
+ {
+ ID long auto increment;
+ SubscriptionStatus string not null;
+ SubscriptionType String
+ Details String,
+ CurrentStatus String
+ }
+ 
+ SUBSCRIPTION_DETAILS_AUDITS
+{
+ ID long auto increment;
+ SubscriptionStatus string not null;
+ SubscriptionType String
+ Details String,
+ CurrentStatus String
+ }
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
